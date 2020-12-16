@@ -1,0 +1,5 @@
+# import Article from "article.graphql"
+
+type Query {
+  articles: [Article]
+}
