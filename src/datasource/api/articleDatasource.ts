@@ -1,11 +1,11 @@
-const { RESTDataSource } = require('apollo-datasource-rest');
+import { RESTDataSource } from 'apollo-datasource-rest';
 
 /**
  * ArticlesAPIクラス
  * 
  * RESTで呼び出すライブラリであるRESTDataSourceを使用する
  */
-class ArticleDatasource extends RESTDataSource {
+export class ArticleDatasource extends RESTDataSource {
   constructor() {
     super();
     this.baseURL = 'http://localhost:3000/'
@@ -15,10 +15,8 @@ class ArticleDatasource extends RESTDataSource {
     return this.get(`articles`);
   }
 
-  async getArticle(id) {
+  async getArticle(id: string) {
     const data = await this.get(`articles/${id}`);
     return data;
   }
 };
-
-module.exports = ArticleDatasource;

@@ -1,6 +1,13 @@
-const { ApolloServer} = require('apollo-server');
-const { importSchema } = require('graphql-import');
-const ArticleDatasource = require('../datasource/api/articleDatasource');
+import express from 'express';
+import cors from 'cors';
+import { ApolloServer, gql } from 'apollo-server-express';
+import { importSchema } from 'graphql-import';
+import { ArticleDatasource } from '../datasource/api/articleDatasource';
+
+const app = express();
+const port = 4000;
+
+app.use(cors());
 
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
@@ -12,9 +19,9 @@ const typeDefs = importSchema('../typeDefs/schema.graphql');
 const resolvers = {
   Query: {
     // 記事情報を全件取得するクエリ
-    articles: async(_source, {}, { dataSources }) => {
+    articles: async(_source: any, {}: any, { dataSources }: any) => {
       return dataSources.articleDatasource.getArticles();
-    }
+    },
   },
 };
 
@@ -31,7 +38,9 @@ const server = new ApolloServer({
   },
 });
 
+server.applyMiddleware({app, path: '/graphql'});
+
 // The `listen` method launches a web server.
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
+app.listen({port: port}, () => {
+  console.log(`🚀  Server ready at http://localhost:4000/graphql`);
 });
