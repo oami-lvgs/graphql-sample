@@ -21,10 +21,25 @@ const prisma = new PrismaClient();
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
   Query: {
-    // 記事情報を全件取得するクエリ
+    // 記事情報(API)を全件取得するクエリ
+    // {
+    //   articles {
+    //     id
+    //     title
+    //   }
+    // }
+    // TODO: 引数の型調べる
     articles: async(_source: any, {}: any, { dataSources }: any) => {
       return dataSources.articleDatasource.getArticles();
     },
+    // DBから全件取得するクエリ
+    // ex) 呼び出し
+    // {
+    //   hatenurse_contents {
+    //     id
+    //     title
+    //   }
+    // }
     hatenurse_contents: async() => {
       return prisma.hatenurse_contents.findMany();
     },
