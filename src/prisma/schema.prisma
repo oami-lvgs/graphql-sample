@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model hatenurse_contents {
+  id         Int       @id @default(autoincrement())
+  title      String
+  created_at DateTime?
+  updated_at DateTime?
+}
+
+model category {
+  id         Int       @id @default(autoincrement())
+  name       String
+  created_at DateTime?
+  updated_at DateTime?
+}
+
+model ranking {
+  id         Int       @id @default(autoincrement())
+  name       String
+  created_at DateTime?
+  updated_at DateTime?
+}

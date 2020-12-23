@@ -1,5 +1,7 @@
 # import Article from "article.graphql"
+# import HatenurseContents from "hatenurse_contents.graphql"
 
 type Query {
-  articles: [Article]
+  articles: [Article],
+  hatenurse_contents: [HatenurseContents]
 }

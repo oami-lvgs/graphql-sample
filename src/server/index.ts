@@ -1,8 +1,9 @@
 import express from 'express';
 import cors from 'cors';
-import { ApolloServer, gql } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
 import { importSchema } from 'graphql-import';
 import { ArticleDatasource } from '../datasource/api/articleDatasource';
+import { PrismaClient } from '@prisma/client';
 
 const app = express();
 const port = 4000;
@@ -12,7 +13,9 @@ app.use(cors());
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
 // your data.
-const typeDefs = importSchema('../typeDefs/schema.graphql');
+const typeDefs = importSchema('./typeDefs/schema.graphql');
+
+const prisma = new PrismaClient();
 
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
@@ -22,6 +25,9 @@ const resolvers = {
     articles: async(_source: any, {}: any, { dataSources }: any) => {
       return dataSources.articleDatasource.getArticles();
     },
+    hatenurse_contents: async() => {
+      return prisma.hatenurse_contents.findMany();
+    },
   },
 };
 
@@ -30,6 +36,9 @@ const resolvers = {
 const server = new ApolloServer({ 
   typeDefs, 
   resolvers, 
+  context: {
+    prisma
+  },
   tracing: true, 
   dataSources: () => {
     return {
